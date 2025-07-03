@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    margin: 0;
+    padding: 0;
+
+}
+.bg-ls-green{
+    background-color: rgba(232, 240, 233, 1);
+}
+.bg-f-purple{
+    background-color: rgba(234, 227, 252, 1);
+}
+.bg-l-skin{
+    background-color:rgba(255, 233, 224, 1);
+}
+.background-green-50{
+    background-color: rgba(96, 137, 100, 0.33);
+}
+.bg-dark-f-green{
+    background-color:rgba(75, 106, 79, 1) ;
+}
+
+.start-end{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.center{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}

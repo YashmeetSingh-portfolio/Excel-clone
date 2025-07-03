@@ -1,0 +1,39 @@
+.top-bar {
+    width: 100%;
+    height: 56px;
+    background-color:rgba(255, 255, 255, 1);
+    border-bottom: 0.5px solid #a5a5a5;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+.path{
+    width: 343px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+}
+.path-element{
+    margin: 0.5rem;
+
+}
+.pane-icon{
+    height: 16px;
+    width:20px;
+    border-top:1px solid rgba(97, 134, 102, 1);
+    border-left:1px solid rgba(97, 134, 102, 1);
+    border-bottom:1px solid rgba(97, 134, 102, 1);
+    border-right:9px solid rgba(97, 134, 102, 1);
+    margin-left: 0.5rem;
+    border-radius: 3px;
+}
+.folder{
+    font-size: 14px;
+
+
+}
+.top-search-input{
+    background: rgba(246, 246, 246, 1);
+}
