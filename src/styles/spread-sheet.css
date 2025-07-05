@@ -169,3 +169,69 @@
 .red-background{
     background-color: rgb(255, 0, 0);
 }
+.active-cell {
+    border: 1px solid #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6;
+    z-index: 10;
+}
+.spreadsheet-container {
+    min-width: 1100px;
+}
+.editing-input {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(80, 84, 80, 1);
+    border: 1px solid #3b82f6;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: white;
+    box-sizing: border-box;
+
+}
+.active-cell {
+    cursor: pointer;
+}
+.spreadsheet {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 32 32"><line x1="16" y1="0" x2="16" y2="32" stroke="black" stroke-width="10"/><line x1="0" y1="16" x2="32" y2="16" stroke="black" stroke-width="10"/></svg>') 16 16, crosshair;
+}
+.custom-cursor{
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 32 32"><line x1="16" y1="0" x2="16" y2="32" stroke="black" stroke-width="10"/><line x1="0" y1="16" x2="32" y2="16" stroke="black" stroke-width="10"/></svg>') 16 16, crosshair;
+}
+.square-dot{
+    bottom: -5px;
+    right: -5px;
+    z-index: 10;
+
+}
+.highlighted-column-title {
+    background-color: rgba(74, 222, 128, 0.1);
+    border-bottom: 2px solid rgb(0, 128, 0);
+}
+
+.highlighted-row-index {
+    background-color: rgba(74, 222, 128, 0.1);
+    border-right: 2px solid rgb(0, 128, 0);
+}
+.spreadsheet-cell {
+    transition: height 0.2s ease;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.spreadsheet textarea {
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    overflow: hidden;
+}
+
+.spreadsheet-row {
+    align-items: stretch;
+}

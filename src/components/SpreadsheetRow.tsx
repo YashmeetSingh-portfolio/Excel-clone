@@ -1,93 +1,101 @@
-import React from "react";
+import React, { useState } from "react";
 import SpreadsheetCell from "./SpreadsheetCell";
-import "../styles/spread-sheet.css";
-import { IndianRupee } from "lucide-react";
+
+interface SpreadsheetRowData {
+    jobRequest: string;
+    submitted: string;
+    status: string;
+    submitter: string;
+    url: string;
+    assigned: string;
+    priority: string;
+    dueDate: string;
+    estValue: string;
+}
 
 type RowProps = {
-    row: {
-        jobRequest: string;
-        submitted: string;
-        status: string;
-        submitter: string;
-        url: string;
-        assigned: string;
-        priority: string;
-        dueDate: string;
-        estValue: string;
-    };
+    row: SpreadsheetRowData;
     rowIndex: number;
+    onCellChange: (rowIndex: number, columnKey: string, value: string) => void;
+    selectedCell: {row: number, col: string} | null;
+    onCellSelect: (rowIndex: number, colKey: string) => void;
 };
 
-const SpreadsheetRow: React.FC<RowProps> = ({ row, rowIndex }) => {
+const SpreadsheetRow: React.FC<RowProps> = ({
+                                                row,
+                                                rowIndex,
+                                                onCellChange,
+                                                selectedCell,
+                                                onCellSelect
+                                            }) => {
+    const [editingCell, setEditingCell] = useState<string | null>(null);
+
+    const columns = [
+        { key: 'jobRequest', label: 'Job Request' },
+        { key: 'submitted', label: 'Submitted' },
+        { key: 'status', label: 'Status' },
+        { key: 'submitter', label: 'Submitter' },
+        { key: 'url', label: 'URL' },
+        { key: 'assigned', label: 'Assigned' },
+        { key: 'priority', label: 'Priority' },
+        { key: 'dueDate', label: 'Due Date' },
+        { key: 'estValue', label: 'Est. Value' },
+    ];
+
+    const handleCellClick = (colKey: string) => {
+        onCellSelect(rowIndex - 1, colKey);
+        setEditingCell(null);
+    };
+
+    const handleDoubleClick = (colKey: string) => {
+        onCellSelect(rowIndex - 1, colKey);
+        setEditingCell(colKey);
+    };
+
+    const handleInputBlur = () => {
+        setEditingCell(null);
+    };
+
     return (
         <div className="grid grid-cols-[32px_minmax(300px,1fr)_repeat(9,minmax(80px,1fr))] border-b border-gray-300 max-h-12">
-            <SpreadsheetCell>
-                <span className="row-index truncate overflow-hidden whitespace-nowrap">{rowIndex}</span>
+            <SpreadsheetCell
+                isSelected={selectedCell?.row === rowIndex - 1 && selectedCell?.col === 'index'}
+                onSelect={() => handleCellClick('index')}
+                onStartEditing={() => handleDoubleClick('index')}
+                isEditing={editingCell === 'index'}
+                className={
+                    selectedCell?.row === rowIndex - 1
+                        ? 'highlighted-row-index'
+                        : ''
+                }
+            >
+                <span className="row-index truncate custom-cursor">{rowIndex}</span>
             </SpreadsheetCell>
-            <SpreadsheetCell>
-                <span className="truncate overflow-hidden whitespace-nowrap">{row.jobRequest}</span>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <span className="start-end truncate overflow-hidden whitespace-nowrap">{row.submitted}</span>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <span className="center truncate overflow-hidden whitespace-nowrap">
-                    <span
-                        className={`px-2 py-1 rounded text-white text-xs ${
-                            row.status === "Complete"
-                                ? "status-btn completed"
-                                : row.status === "In-process"
-                                    ? "in-process status-btn"
-                                    : row.status === "Blocked"
-                                        ? "status-btn blocked"
-                                        : row.status === ""
-                                            ? ""
-                                            : "status-btn need-to-start"
-                        }`}
-                    >
-                        {row.status}
-                    </span>
-                </span>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <span className="truncate overflow-hidden whitespace-nowrap">{row.submitter}</span>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <a
-                    href={row.url}
-                    className="text-blue-600 underline truncate overflow-hidden whitespace-nowrap block"
+            {columns.map((col) => (
+                <SpreadsheetCell
+                    key={col.key}
+                    isSelected={selectedCell?.row === rowIndex - 1 && selectedCell?.col === col.key}
+                    onSelect={() => handleCellClick(col.key)}
+                    onStartEditing={() => handleDoubleClick(col.key)}
+                    isEditing={editingCell === col.key}
                 >
-                    {row.url}
-                </a>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <span className="truncate overflow-hidden whitespace-nowrap">{row.assigned}</span>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <span className="center truncate overflow-hidden whitespace-nowrap">
-                    <span
-                        className={`px-2 py-1 rounded text-xs ${
-                            row.priority === "High"
-                                ? "difficulty-high"
-                                : row.priority === "Medium"
-                                    ? "difficulty-medium"
-                                    : "difficulty-low"
-                        }`}
-                    >
-                        {row.priority}
-                    </span>
-                </span>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <span className="start-end truncate overflow-hidden whitespace-nowrap">{row.dueDate}</span>
-            </SpreadsheetCell>
-            <SpreadsheetCell>
-                <div className="flex justify-between items-center w-full truncate overflow-hidden whitespace-nowrap">
-                    <span className="start-end truncate overflow-hidden whitespace-nowrap">{row.estValue}</span>
-                    {row.estValue && <IndianRupee size={16} className="rupee" />}
-                </div>
-            </SpreadsheetCell>
-            <div className="p-2 border-l border-dashed border-gray-400 text-center text-gray-400 cursor-pointer"></div>
+                    {editingCell === col.key ? (
+                        <input
+                            value={row[col.key as keyof SpreadsheetRowData]}
+                            onChange={(e) => onCellChange(rowIndex - 1, col.key, e.target.value)}
+                            onBlur={handleInputBlur}
+                            className="w-full bg-transparent outline-none"
+                            autoFocus
+                        />
+                    ) : (
+                        <div className="w-full truncate custom-cursor">
+                            {row[col.key as keyof SpreadsheetRowData]}
+                        </div>
+                    )}
+                </SpreadsheetCell>
+            ))}
+
+            <div className="p-2 border-l border-dashed border-gray-400 custom-cursor"></div>
         </div>
     );
 };

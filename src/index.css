@@ -38,3 +38,7 @@ body{
     align-items: center;
     justify-content:center;
 }
+
+.border-dark-f-green{
+    border: 2px solid rgb(0, 128, 0);
+}
