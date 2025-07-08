@@ -4,10 +4,64 @@
 
 .new-action-btn{
     background-color: rgba(75, 106, 79, 1);
-    padding-top:8px;
-    padding-bottom:8px;
-    padding-left:24px;
-    padding-right:24px;
+    padding: 8px 24px;
     display:flex;
+}
 
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.notification-content {
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0;
+    animation: fadeInOut 3s forwards;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notification-container.info .notification-content {
+    background-color: rgb(81, 150, 86);
+    color: #fff;
+}
+
+.notification-container.success .notification-content {
+    background-color: rgb(81, 150, 86);
+    color: #ffffff;
+}
+
+.notification-container.error .notification-content {
+    background-color: rgb(81, 150, 86);
+    color: #fff;
+}
+
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 }

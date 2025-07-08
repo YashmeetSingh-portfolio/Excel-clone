@@ -56,6 +56,35 @@ const SpreadsheetRow: React.FC<RowProps> = ({
         setEditingCell(null);
     };
 
+    const getStatusBadge = (status: string) => {
+        const normalized = status.toLowerCase();
+        let className = '';
+        if (normalized.includes('in process') || normalized.includes('in-process')) className = 'status-badge-in-process';
+        else if (normalized.includes('need to start')) className = 'status-badge-need-to-start';
+        else if (normalized.includes('complete')) className = 'status-badge-complete';
+        else if (normalized.includes('blocked')) className = 'status-badge-blocked';
+
+        if (className) {
+            return <span className={`status-badge ${className}`}>{status}</span>;
+        }
+        return status;
+    };
+
+    const getPriorityClass = (priority: string) => {
+        const normalized = priority.toLowerCase().trim();
+        if (normalized === 'medium') return 'priority-medium';
+        if (normalized === 'high') return 'priority-high';
+        if (normalized === 'low') return 'priority-low';
+        return '';
+    };
+
+    const renderCellContent = (colKey: string, value: string) => {
+        if (colKey === 'status') return getStatusBadge(value);
+        if (colKey === 'priority') return <span className={getPriorityClass(value)}>{value}</span>;
+        if (colKey === 'url') return <span className="url-text">{value}</span>;
+        return value;
+    };
+
     return (
         <div className="grid grid-cols-[32px_minmax(300px,1fr)_repeat(9,minmax(80px,1fr))] border-b border-gray-300 max-h-12">
             <SpreadsheetCell
@@ -63,11 +92,7 @@ const SpreadsheetRow: React.FC<RowProps> = ({
                 onSelect={() => handleCellClick('index')}
                 onStartEditing={() => handleDoubleClick('index')}
                 isEditing={editingCell === 'index'}
-                className={
-                    selectedCell?.row === rowIndex - 1
-                        ? 'highlighted-row-index'
-                        : ''
-                }
+                className={selectedCell?.row === rowIndex - 1 ? 'highlighted-row-index' : ''}
             >
                 <span className="row-index truncate custom-cursor">{rowIndex}</span>
             </SpreadsheetCell>
@@ -89,12 +114,11 @@ const SpreadsheetRow: React.FC<RowProps> = ({
                         />
                     ) : (
                         <div className="w-full truncate custom-cursor">
-                            {row[col.key as keyof SpreadsheetRowData]}
+                            {renderCellContent(col.key, row[col.key as keyof SpreadsheetRowData])}
                         </div>
                     )}
                 </SpreadsheetCell>
             ))}
-
             <div className="p-2 border-l border-dashed border-gray-400 custom-cursor"></div>
         </div>
     );
