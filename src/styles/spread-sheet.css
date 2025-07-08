@@ -82,6 +82,9 @@
     overflow: hidden;
 }
 
+.spreadsheet::-webkit-scrollbar {
+    display: none;
+}
 .title-cell{
     font-size: 12px;
     font-weight: 600;
