@@ -79,7 +79,7 @@
 
 }
 .spreadsheet{
-    overflow: hidden;
+    overflow: auto;
 }
 
 .spreadsheet::-webkit-scrollbar {
